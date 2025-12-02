@@ -10,6 +10,7 @@ namespace Gym_Tracker_Verwaltungssystem
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("HALLO!!!");
         }
     }
 }
