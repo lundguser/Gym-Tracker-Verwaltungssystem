@@ -36,7 +36,7 @@ namespace Gym_Tracker_Verwaltungssystem
             admin1.Rolle = "Admin";
 
 
-            //Liste hinzugefügt muss unter den usern sein sonst fehler
+            //Liste hinzugefügt (muss unter den usern sein sonst fehler)
             List<Benutzer> alleUser = new List<Benutzer>();
             alleUser.Add(user1);
             alleUser.Add(user2);
@@ -45,7 +45,7 @@ namespace Gym_Tracker_Verwaltungssystem
 
 
             //login test
-            Console.WriteLine("Willkomen Im Gym Tracker!\n Bitte logge dich ein!");
+            Console.WriteLine("Willkomen Im Gym Tracker!\nBitte logge dich ein!");
             Console.WriteLine("Benutzername:");
             string nameEingabe = Console.ReadLine();
             
@@ -61,6 +61,8 @@ namespace Gym_Tracker_Verwaltungssystem
                 if (B.Username == nameEingabe)
                 {
                     userExistiert = true;
+                    gefundenerUser = B;
+                    break;
                 }
 
 
@@ -72,7 +74,23 @@ namespace Gym_Tracker_Verwaltungssystem
             }
             else
             {
-                //passwort überprüfung
+                if (gefundenerUser.Passwort == pwEindgabe)
+                {
+                    Console.WriteLine("Erfolgreich eingeloggt!");
+
+                    if (gefundenerUser.Rolle == "Admin")
+                    {
+                        Console.WriteLine("Willkommen im Admin-Menü");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Willkommen im User-Menü");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Falsches Passwort.");
+                }
             }
 
 
