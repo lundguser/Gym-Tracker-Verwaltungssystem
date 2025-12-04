@@ -11,28 +11,28 @@ namespace Gym_Tracker_Verwaltungssystem
     {
         static void Main(string[] args)
         {
-            
+            /*
             //User Objekte (vorerst Hardcode)
             Benutzer user1 = new Benutzer();
             user1.Username = "Johnny";
-            user1.Passwort = "123";
+            user1.Password = "123";
             user1.Rolle = "User";
 
             Benutzer user2 = new Benutzer();
             user2.Username = "Jack";
-            user2.Passwort = "1234";
+            user2.Password = "1234";
             user2.Rolle = "User";
 
             Benutzer user3 = new Benutzer();
             user3.Username = "Tyleel";
-            user3.Passwort = "12345";
+            user3.Password = "12345";
             user3.Rolle = "User";
 
 
             //Admin Objekt  (vorerst hardcode)
             Admin admin1 = new Admin();
             admin1.Username = "admin";
-            admin1.Passwort = "master";
+            admin1.Password = "master";
             admin1.Rolle = "Admin";
 
 
@@ -93,6 +93,26 @@ namespace Gym_Tracker_Verwaltungssystem
                 }
             }
 
+            */
+            Benutzer user1 = new Benutzer("jack5", "coke23", 69);
+            Benutzer user2 = new Benutzer("lox", "karotte123", 4); login(user1, user2);
+        }
+        static void login(Benutzer user1, Benutzer user2)
+        {
+            Console.WriteLine("Willkommen im Gym Tracker!\nBitte melden sie sich an!"); 
+            Console.Write("Username: "); 
+            string inputUsername = Console.ReadLine(); 
+            Console.Write("Password: "); 
+            string inputPassword = Console.ReadLine(); 
+            
+            if ((inputUsername == user1.Username && inputPassword == user1.Password) || (inputUsername == user2.Username && inputPassword == user2.Password)) 
+            { 
+                Console.WriteLine("Sie haben sich erfolgreich eingeloggt"); 
+            } 
+            else 
+            { 
+                Console.WriteLine("Benutzername und/oder Passwort ist falsch"); 
+            }
 
 
         }

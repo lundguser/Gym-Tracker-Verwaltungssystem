@@ -8,10 +8,17 @@ namespace Gym_Tracker_Verwaltungssystem
 {
     public class Benutzer
     {
-        public string Username { get; set; }
-        public string Passwort { get; set; } = string.Empty;//??
-        public string Rolle { get; set; }
-
         //kapselung damit user und admin doppelte punkte beide nehmen können --> weniger code
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public int Alter { get; set; }
+        public Benutzer(string username, string password, int alter)
+        {
+            Username = username;
+            Password = password; Alter = alter;
+        }
     }
 }
+    
+    
+
