@@ -12,143 +12,158 @@ namespace Gym_Tracker_Verwaltungssystem
     {
         static void Main(string[] args)
         {
-            /*
-            //User Objekte (vorerst Hardcode)
-            Benutzer user1 = new Benutzer();
-            user1.Username = "Johnny";
-            user1.Password = "123";
-            user1.Rolle = "User";
-
-            Benutzer user2 = new Benutzer();
-            user2.Username = "Jack";
-            user2.Password = "1234";
-            user2.Rolle = "User";
-
-            Benutzer user3 = new Benutzer();
-            user3.Username = "Tyleel";
-            user3.Password = "12345";
-            user3.Rolle = "User";
-
-
-            //Admin Objekt  (vorerst hardcode)
-            Admin admin1 = new Admin();
-            admin1.Username = "admin";
-            admin1.Password = "master";
-            admin1.Rolle = "Admin";
-
-
-            //Liste hinzugefügt (muss unter den usern sein sonst fehler)
-            List<Benutzer> alleUser = new List<Benutzer>();
-            alleUser.Add(user1);
-            alleUser.Add(user2);
-            alleUser.Add(user3);
-            alleUser.Add(admin1);
-
-
-            //login test
-            Console.WriteLine("Willkomen Im Gym Tracker!\nBitte logge dich ein!");
-            Console.WriteLine("Benutzername:");
-            string nameEingabe = Console.ReadLine();
-            
-            Console.WriteLine("Passwort");
-            string pwEingabe = Console.ReadLine();
-
-            //überprüfen ob es den user gibt
-            bool userExistiert = false;
-
-            foreach (Benutzer B in alleUser)
-            {
-                
-                if (B.Username == nameEingabe)
-                {
-                    userExistiert = true;
-                    gefundenerUser = B;
-                    break;
-                }
-
-
-            }
-
-            if (userExistiert == false)
-            {
-                Console.WriteLine("Dieser Username existiert nicht...");
-            }
-            else
-            {
-                if (gefundenerUser.Passwort == pwEindgabe)
-                {
-                    Console.WriteLine("Erfolgreich eingeloggt!");
-
-                    if (gefundenerUser.Rolle == "Admin")
-                    {
-                        Console.WriteLine("Willkommen im Admin-Menü");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Willkommen im User-Menü");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Falsches Passwort.");
-                }
-            }
-
-            */
+            //Benutzer erstellen
             Benutzer user1 = new Benutzer("jack5", "coke23", 69);
             
-            Benutzer user2 = new Benutzer("lox", "karotte123", 4); 
-            
-            login(user1, user2);
+            Benutzer user2 = new Benutzer("lox", "karotte123", 4);
+
+            //Admin erstellen
+            Admin admin = new Admin("admin", "themaster1", 30);
+
+            // Liste aller Benutzer
+            List<Benutzer> benutzerliste = new List<Benutzer>();
+            benutzerliste.Add(user1);
+            benutzerliste.Add(user2);
+            benutzerliste.Add(admin);
+
+            //Login starten
+            Login(benutzerliste);
         }
-        static void login(Benutzer user1, Benutzer user2)
+        
+
+
+        //Login Methode
+        static void Login(List<Benutzer> benutzerListe)
         {
-            Console.WriteLine("Willkommen im Gym Tracker!\nBitte melden sie sich an!"); 
-            Console.Write("Username: "); 
-            string inputUsername = Console.ReadLine(); 
-            Console.Write("Password: "); 
-            string inputPassword = Console.ReadLine(); 
+            Console.WriteLine("Willkommen im Gym Tracker!\nBitte melden sie sich an!");
+
+            Console.Write("Username: ");
+            string inputUsername = Console.ReadLine();
+
+            Console.Write("Password: ");
+            string inputPassword = Console.ReadLine();
+
+            Benutzer gefundenerUser = null;
+
             
-            if ((inputUsername == user1.Username && inputPassword == user1.Password) || (inputUsername == user2.Username && inputPassword == user2.Password)) 
-            { 
-                Console.WriteLine("Sie haben sich erfolgreich eingeloggt"); 
-            } 
-            else 
-            { 
-                Console.WriteLine("Benutzername und/oder Passwort ist falsch"); 
+            //Liste wird durchsucht     Jeder Benutzer wird geprüft
+            foreach (Benutzer aktuellerBenutzer in benutzerListe)
+            {
+                if (aktuellerBenutzer.Username == inputUsername && 
+                    aktuellerBenutzer.Password == inputPassword)
+                {
+                    gefundenerUser = aktuellerBenutzer;
+                    break;
+                }
             }
 
-            //Liste User trägt Training ein und es wird in der Liste gepeichert
-
-            string userDatei = $"{user1.Username}.txt"; // Daten des users laden
-            List<string> trainingsErgebnisse = new List<string>();
-
-            if (File.Exists(userDatei))
+            //Keine Übereinstimmung --> login failed
+            if (gefundenerUser == null) // =wenn User nicht gefunden wurde
             {
-                trainingsErgebnisse = File.ReadAllLines(userDatei).ToList();
+                Console.WriteLine("Benutzername und/oder Passwort falsch.");
+                return;
+            }
+
+            Console.WriteLine($"Eingeloggt als: {gefundenerUser.Username}");
+
+            
+            //Weiterleitung an jeweilige Rolle
+            if (gefundenerUser is Admin)
+            {
+                AdminMenü((Admin)gefundenerUser);
             }
             else
             {
-                trainingsErgebnisse = new List<string>();
+                BenutzerMenü(gefundenerUser);
             }
+        }
 
-            // Während dem Programm Einträge hinzufügen
 
-            Console.WriteLine("\nHeutige Trainingsergebnisse");
-            string heutigeErgebnisse = Console.ReadLine();
 
-            trainingsErgebnisse.Add(heutigeErgebnisse);
-            Console.WriteLine("Heutiges Training gespeichert");
 
-            //speichern
-            File.WriteAllLines(userDatei, trainingsErgebnisse);
+        //Benutzer Menü Methode
+        static void BenutzerMenü(Benutzer user)
+        {
+            bool aktiv = true;
 
-            Console.WriteLine("\n--- Alle Trainingseinträge ---");
-            foreach (string eintrag in trainingsErgebnisse)
+            while (aktiv)
             {
-                Console.WriteLine(eintrag);
+                Console.WriteLine("\n\n=======================");
+                Console.WriteLine("====== Hauptmenü ======");
+                Console.WriteLine("= 1. Heutiges Training =");
+                Console.WriteLine("= 2. Training hinzufügen =");
+                Console.WriteLine("= 3. Logout =");
+                Console.Write("= Bitte wählen: = ");
+
+                string auswahl = Console.ReadLine();
+
+                switch (auswahl)
+                {
+                    case "1":
+                        TrainingAnzeigen(user);
+                        break;
+
+                    case "2":
+                        TrainingHinzufügen(user);
+                        break;
+
+                    case "3":
+                        aktiv = false;
+                        Console.WriteLine("Sie wurden ausgeloggt. ");
+                        break;
+
+                    default:
+                        Console.WriteLine("Ungültige Eingabe!");
+                        break;
+                }
+            }
+        }
+
+
+        // Training Anzeigen Methode
+        static void TrainingAnzeigen(Benutzer user)
+        {
+            string dateiName = $"{user.Username}.txt";
+
+            if (!File.Exists(dateiName))
+            {
+                Console.WriteLine("Noch keine Einträge vorhanden ");
+                return;
             }
 
+            Console.WriteLine("\n=========================");
+            Console.WriteLine("=== Trainingseinträge ===");
+
+            foreach (string zeile in File.ReadAllLines(dateiName))
+            {
+                Console.WriteLine(zeile);
+            }
+        }
+
+
+
+        // Training Hinzufügen Methode
+        static void TrainingHinzufügen(Benutzer user)
+        {
+            Console.WriteLine("\nTraining hinzufügen:");
+            string neuerEintrag = Console.ReadLine();
+
+            string dateiName = $"{user.Username}.txt";
+
+            File.AppendAllLines(dateiName, new List<string>() { neuerEintrag });  //fügt eine neue Zeile Text zur Datei hinzu oder erstellt die Datei falls noch nicht vorhanden
+            Console.WriteLine("Training hinzugefügt.");
+        }
+
+        // Admin Menü MORGEN HIER WEITER MACHEN!!!
+        static void AdminMenü(Admin admin)
+        {
+            Console.WriteLine("Admin Menü ");
         }
     }
 }
+
+
+
+
+
+  
