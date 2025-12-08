@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO; //Wichtig für File.WriteAllLines
 
 namespace Gym_Tracker_Verwaltungssystem
 {
@@ -95,7 +96,10 @@ namespace Gym_Tracker_Verwaltungssystem
 
             */
             Benutzer user1 = new Benutzer("jack5", "coke23", 69);
-            Benutzer user2 = new Benutzer("lox", "karotte123", 4); login(user1, user2);
+            
+            Benutzer user2 = new Benutzer("lox", "karotte123", 4); 
+            
+            login(user1, user2);
         }
         static void login(Benutzer user1, Benutzer user2)
         {
@@ -114,6 +118,36 @@ namespace Gym_Tracker_Verwaltungssystem
                 Console.WriteLine("Benutzername und/oder Passwort ist falsch"); 
             }
 
+            //Liste User trägt Training ein und es wird in der Liste gepeichert
+
+            string userDatei = $"{user1.Username}.txt"; // Daten des users laden
+            List<string> trainingsErgebnisse = new List<string>();
+
+            if (File.Exists(userDatei))
+            {
+                trainingsErgebnisse = File.ReadAllLines(userDatei).ToList();
+            }
+            else
+            {
+                trainingsErgebnisse = new List<string>();
+            }
+
+            // Während dem Programm Einträge hinzufügen
+
+            Console.WriteLine("\nHeutige Trainingsergebnisse");
+            string heutigeErgebnisse = Console.ReadLine();
+
+            trainingsErgebnisse.Add(heutigeErgebnisse);
+            Console.WriteLine("Heutiges Training gespeichert");
+
+            //speichern
+            File.WriteAllLines(userDatei, trainingsErgebnisse);
+
+            Console.WriteLine("\n--- Alle Trainingseinträge ---");
+            foreach (string eintrag in trainingsErgebnisse)
+            {
+                Console.WriteLine(eintrag);
+            }
 
         }
     }
