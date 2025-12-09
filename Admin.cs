@@ -12,24 +12,56 @@ namespace Gym_Tracker_Verwaltungssystem
         {
         }
 
-        public void BenutzerAnlegen()
+
+        public void BenutzerAnzeigen(List<Benutzer> benutzerListe)
         {
+            Console.WriteLine("\n=== Benutzerliste ===");
+            foreach (Benutzer b in benutzerListe)
+            {
+                string rolle = (b is Admin) ? "Admin" : "Benutzer";
+                Console.WriteLine($"- {b.Username} ({rolle})");
+            }
 
         }
 
-        public void BenutzerBearbeiten()
+        public void BenutzerAnlegen(List<Benutzer> benutzerListe)
         {
+            Console.Write("\nNeuer Benutzername: ");
+            string name = Console.ReadLine();
 
+            Console.Write("Passwort: ");
+            string pw = Console.ReadLine();
+
+            Console.Write("Alter: ");
+            int alter = Convert.ToInt32(Console.ReadLine());
+
+            Benutzer neu = new Benutzer(name, pw, alter);
+            benutzerListe.Add(neu);
+
+            Console.WriteLine("Benutzer erfolgreich angelegt!");
         }
 
-        public void BenutzerLöschen()
+        public void BenutzerLöschen(List<Benutzer> benutzerListe)
         {
+            Console.Write("\nBenutzername zum Löschen eingeben: ");
+            string name = Console.ReadLine();
 
-        }
+            Benutzer ziel = benutzerListe.FirstOrDefault(b => b.Username == name);
 
-        public void TrainingsEinsehen()
-        { 
+            if (ziel == null)
+            {
+                Console.WriteLine("Benutzer nicht gefunden.");
+                return;
+            }
 
+            if (ziel is Admin)
+            {
+                Console.WriteLine("Ein Admin kann nicht gelöscht werden!");
+                return;
+            }
+
+            benutzerListe.Remove(ziel);
+            Console.WriteLine("Benutzer wurde gelöscht.");
         }
            
 

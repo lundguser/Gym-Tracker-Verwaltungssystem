@@ -13,23 +13,23 @@ namespace Gym_Tracker_Verwaltungssystem
         static void Main(string[] args)
         {
             //Benutzer erstellen
-            Benutzer user1 = new Benutzer("jack5", "coke23", 69);
-            
-            Benutzer user2 = new Benutzer("lox", "karotte123", 4);
+            Benutzer user1 = new Benutzer("jack5", "coke23", 50);
+
+            Benutzer user2 = new Benutzer("lox", "karotte123", 20);
 
             //Admin erstellen
             Admin admin = new Admin("admin", "themaster1", 30);
 
             // Liste aller Benutzer
-            List<Benutzer> benutzerliste = new List<Benutzer>();
-            benutzerliste.Add(user1);
-            benutzerliste.Add(user2);
-            benutzerliste.Add(admin);
+            List<Benutzer> benutzerListe = new List<Benutzer>();
+            benutzerListe.Add(user1);
+            benutzerListe.Add(user2);
+            benutzerListe.Add(admin);
 
             //Login starten
-            Login(benutzerliste);
+            Login(benutzerListe);
         }
-        
+
 
 
         //Login Methode
@@ -37,7 +37,7 @@ namespace Gym_Tracker_Verwaltungssystem
         {
             Console.WriteLine("Willkommen im Gym Tracker!\nBitte melden sie sich an!");
 
-            Console.Write("Username: ");
+            Console.Write("\nUsername: ");
             string inputUsername = Console.ReadLine();
 
             Console.Write("Password: ");
@@ -45,11 +45,11 @@ namespace Gym_Tracker_Verwaltungssystem
 
             Benutzer gefundenerUser = null;
 
-            
+
             //Liste wird durchsucht     Jeder Benutzer wird geprüft
             foreach (Benutzer aktuellerBenutzer in benutzerListe)
             {
-                if (aktuellerBenutzer.Username == inputUsername && 
+                if (aktuellerBenutzer.Username == inputUsername &&
                     aktuellerBenutzer.Password == inputPassword)
                 {
                     gefundenerUser = aktuellerBenutzer;
@@ -66,11 +66,11 @@ namespace Gym_Tracker_Verwaltungssystem
 
             Console.WriteLine($"Eingeloggt als: {gefundenerUser.Username}");
 
-            
+
             //Weiterleitung an jeweilige Rolle
             if (gefundenerUser is Admin)
             {
-                AdminMenü((Admin)gefundenerUser);
+                AdminMenü((Admin)gefundenerUser, benutzerListe);
             }
             else
             {
@@ -88,14 +88,16 @@ namespace Gym_Tracker_Verwaltungssystem
 
             while (aktiv)
             {
-                Console.WriteLine("\n\n=======================");
-                Console.WriteLine("====== Hauptmenü ======");
-                Console.WriteLine("= 1. Heutiges Training =");
-                Console.WriteLine("= 2. Training hinzufügen =");
-                Console.WriteLine("= 3. Logout =");
-                Console.Write("= Bitte wählen: = ");
-
+                Console.WriteLine("\n\n=========================");
+                Console.WriteLine("======= Hauptmenü =======");
+                Console.WriteLine("= 1. Heutiges Training ");
+                Console.WriteLine("= 2. Training hinzufügen ");
+                Console.WriteLine("= 3. Logout ");
+                Console.Write("= Bitte wählen:  ");
                 string auswahl = Console.ReadLine();
+
+
+
 
                 switch (auswahl)
                 {
@@ -109,7 +111,7 @@ namespace Gym_Tracker_Verwaltungssystem
 
                     case "3":
                         aktiv = false;
-                        Console.WriteLine("Sie wurden ausgeloggt. ");
+                        Console.WriteLine("\nSie wurden ausgeloggt. ");
                         break;
 
                     default:
@@ -154,10 +156,51 @@ namespace Gym_Tracker_Verwaltungssystem
             Console.WriteLine("Training hinzugefügt.");
         }
 
-        // Admin Menü MORGEN HIER WEITER MACHEN!!!
-        static void AdminMenü(Admin admin)
+
+
+        // Admin Menü Methode
+        static void AdminMenü(Admin admin, List<Benutzer> benutzerListe)
         {
-            Console.WriteLine("Admin Menü ");
+            bool aktiv = true;
+
+            while (aktiv)
+            {
+                Console.WriteLine("\n\n=========================");
+                Console.WriteLine("======= Admin Menü =======");
+                Console.WriteLine("= 1. Benutzer anzeigen ");
+                Console.WriteLine("= 2. Benutzer anlegen ");
+                Console.WriteLine("= 3. Benutzer löschen ");
+                Console.WriteLine("= 4. Logout");
+                Console.Write("= Bitte wählen:  ");
+
+                string auswahl = Console.ReadLine();
+
+
+
+                switch (auswahl)
+                {
+                    case "1":
+                        admin.BenutzerAnzeigen(benutzerListe);
+                        break;
+
+                    case "2":
+                        admin.BenutzerAnlegen(benutzerListe);
+                        break;
+
+                    case "3":
+                        admin.BenutzerLöschen(benutzerListe);
+                        break;
+
+                    case "4":
+                        aktiv = false;
+                        Console.WriteLine("\nSie wurden ausgeloggt. ");
+                        break;
+
+                    default:
+                        Console.WriteLine("Ungültige Eingabe!");
+                        break;
+                }
+            }
         }
     }
 }
