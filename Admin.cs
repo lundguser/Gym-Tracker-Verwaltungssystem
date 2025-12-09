@@ -18,7 +18,17 @@ namespace Gym_Tracker_Verwaltungssystem
             Console.WriteLine("\n=== Benutzerliste ===");
             foreach (Benutzer b in benutzerListe)
             {
-                string rolle = (b is Admin) ? "Admin" : "Benutzer";
+                string rolle;
+
+                if (b is Admin)
+                {
+                    rolle = "Admin";
+                }
+                else
+                {
+                    rolle = "Benutzer";
+                }
+
                 Console.WriteLine($"- {b.Username} ({rolle})");
             }
 
@@ -46,7 +56,17 @@ namespace Gym_Tracker_Verwaltungssystem
             Console.Write("\nBenutzername zum Löschen eingeben: ");
             string name = Console.ReadLine();
 
-            Benutzer ziel = benutzerListe.FirstOrDefault(b => b.Username == name);
+            Benutzer ziel = null;
+
+            foreach (Benutzer benutzer in benutzerListe)
+            {
+                if (benutzer.Username == name)
+                {
+                    ziel = benutzer; 
+                    break;
+                }
+            }
+                
 
             if (ziel == null)
             {
